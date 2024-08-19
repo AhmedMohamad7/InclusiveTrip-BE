@@ -17,8 +17,8 @@ user.belongsTo(role, {foreignKey: "roleId"});
 review.hasMany(fileUpload, {foreignKey: "reviewId"});
 fileUpload.belongsTo(review, {foreignKey: "reviewId"});
 
-review.hasMany(placeCategory, {foreignKey: "placeCategoryId"});
-placeCategory.belongsTo(review, {foreignKey: "placeCategoryId"});
+placeCategory.hasMany(review, {foreignKey: "placeCategoriesId"});
+review.belongsTo(placeCategory, {foreignKey: "placeCategoriesId"});
 
 review.belongsToMany(barrier, {through: barrierReview, foreignKey: "reviewId"});
 barrier.belongsToMany(review, {through: barrierReview, foreignKey: "barrierId"});
