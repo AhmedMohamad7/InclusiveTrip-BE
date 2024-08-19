@@ -23,5 +23,5 @@ placeCategory.belongsTo(review, {foreignKey: "placeCategoryId"});
 review.belongsToMany(barrier, {through: barrierReview, foreignKey: "reviewId"});
 barrier.belongsToMany(review, {through: barrierReview, foreignKey: "barrierId"});
 
-await sequelize.sync();
+await sequelize.sync( {force: true} );
 console.log("All models were synchronized successfully.");
