@@ -2,20 +2,25 @@ import e from "cors";
 import sequelize from "../db/index.js";
 import { DataTypes } from "sequelize";
 
-const barrier = sequelize.define("barriers", {
-    name: {
+
+const fileUpload = sequelize.define("fileUploads", {
+    fileName: {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    description: {
+    fileType: {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    selected: {
-        type: DataTypes.BOOLEAN,
+    fileSize: { 
+        type: DataTypes.INTEGER,
         allowNull: false,
-        defaultValue: false,
+    },
+    filePath: {
+        type: DataTypes.STRING,
+        allowNull: false,
     },
     });
 
-    export default barrier;
+
+    export default fileUpload;
