@@ -1,6 +1,6 @@
 import sequelize from "../db/index.js";
 import { DataTypes } from "sequelize";
-
+import role from "./rolesModel.js";
 
 
 const user = sequelize.define("users", {
@@ -25,6 +25,15 @@ const user = sequelize.define("users", {
     password: {
         type: DataTypes.STRING,
         allowNull: false,
+    },
+    roleId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: role,
+            key: "id",
+        },
+        defaultValue: 2,
     },
     profilePhoto: {
         type: DataTypes.STRING,
