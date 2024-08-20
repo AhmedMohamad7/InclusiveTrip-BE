@@ -9,6 +9,7 @@ import placeCategoriesRouter from './routes/placeCategoriesRoute.js';
 import barrierReviewRouter from './routes/barriersReviewsRoute.js';
 import barrierRouter from './routes/barriersRoute.js';
 import FileRouter from './routes/fileUploadsRoute.js';
+import ProfilePhotosRouter from './routes/profilePhotosRoute.js';
 import { join } from "path";
 const app = express();
 
@@ -25,7 +26,7 @@ app.use('/placeCategories', placeCategoriesRouter);
 app.use('/barriersReviews', barrierReviewRouter);
 app.use('/barriers', barrierRouter);
 app.use('/file-upload', FileRouter);
-
+app.use('/profilePhotos', ProfilePhotosRouter);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

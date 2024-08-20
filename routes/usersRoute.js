@@ -1,15 +1,16 @@
 import { Router } from "express";
 import { getUsers, getUser, createUser, updateUser, deleteUser } from "../controllers/usersController.js";
-
+import validateSchema from "../middlewares/validateSchema.js";
+import usersSchema from "../schemas/usersSchema.js";
 
 
 const usersRoute = Router();
 
 
 usersRoute.get('/', getUsers);
-usersRoute.get('/:id', getUser);
-usersRoute.post('/', createUser);
-usersRoute.put('/:id', updateUser);
-usersRoute.delete('/:id', deleteUser);
+usersRoute.get('/:username', getUser);
+usersRoute.post('/',validateSchema(usersSchema), createUser);
+usersRoute.put('/:username',validateSchema(usersSchema), updateUser);
+usersRoute.delete('/:username', deleteUser);
 
 export default usersRoute;

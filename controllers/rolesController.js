@@ -21,9 +21,9 @@ export const getRole = async (req, res) => {
 }
 
 export const createRole = async (req, res) => {
-    const { roleType } = req.body;
+    const { type } = req.body;
     try {
-        const newRole = await role.create({ roleType });
+        const newRole = await role.create({ type });
         res.status(201).json(newRole);
     } catch (error) {
         res.status(409).json({ message: error.message });
@@ -32,10 +32,10 @@ export const createRole = async (req, res) => {
 
 export const updateRole = async (req, res) => {
     const { id } = req.params;
-    const { roleType } = req.body;
+    const { type} = req.body;
     try {
         const roleToUpdate = await role.findByPk(id);
-        roleToUpdate.roleType = roleType;
+        roleToUpdate.type = type;
         await roleToUpdate.save();
         res.status(200).json(roleToUpdate);
     } catch (error) {
@@ -47,7 +47,9 @@ export const updateRole = async (req, res) => {
 export const deleteRole = async (req, res) => {
     const { id } = req.params;
     try {
-        await role.destroy({ where: { id } });
+        const role1 = await role.findByPk(id);
+        if (!role1) throw new Error('Role not found');
+        await role1.destroy();
         res.status(200).json({ message: 'Role deleted successfully' });
     } catch (error) {
         res.status(404).json({ message: error.message });

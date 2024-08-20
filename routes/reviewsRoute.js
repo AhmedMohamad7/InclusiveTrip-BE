@@ -1,15 +1,16 @@
 import { Router } from "express";
 import { getReviews, createReview, getReview,updateReview,deleteReview } from "../controllers/reviewsController.js";
-
+import validateSchema from "../middlewares/validateSchema.js";
+import reviewsSchema from "../schemas/reviewsSchema.js";
 
 const reviewRouter = Router();
 
 
 reviewRouter.get("/", getReviews);
-reviewRouter.get("/:id", getReview);
-reviewRouter.post("/", createReview);
-reviewRouter.put("/:id", updateReview);
-reviewRouter.delete("/:id", deleteReview);
+reviewRouter.get("/:gpsCode", getReview);
+reviewRouter.post("/",validateSchema(reviewsSchema), createReview);
+reviewRouter.put("/:gpscode",validateSchema(reviewsSchema), updateReview);
+reviewRouter.delete("/:gpscode", deleteReview);
 
 
 

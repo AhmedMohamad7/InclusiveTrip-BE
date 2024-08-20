@@ -12,8 +12,9 @@ export const getBarriers = async (req, res) => {
 
 export const getBarrier = async (req, res) => {
     try {
-        const barrier = await barrier.findByPk(req.params.id);
-        res.json(barrier);
+        const barrier1 = await barrier.findOne({ where: { name: req.params.name } });
+        if (!barrier1) throw new Error("Barrier not found");
+        res.json(barrier1);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -23,7 +24,7 @@ export const createBarrier = async (req, res) => {
     const { name, description, selected } = req.body;
     try {
         const newBarrier = await barrier.create({ name, description, selected });
-        res.status(201).res.json(newBarrier);
+        res.status(201).json(newBarrier);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -32,13 +33,13 @@ export const createBarrier = async (req, res) => {
 export const updateBarrier = async (req, res) => {
     const { name, description, selected } = req.body;
     try {
-        const barrier = await barrier.findByPk(req.params.id);
-        if (barrier) {
-            barrier.name = name;
-            barrier.description = description;
-            barrier.selected = selected;
-            await barrier.save();
-            res.json(barrier);
+        const barrier1 = await barrier.findOne({ where: { name: req.params.name } });
+        if (barrier1) {
+            barrier1.name = name;
+            barrier1.description = description;
+            barrier1.selected = selected;
+            await barrier1.save();
+            res.json(barrier1);
         } else {
             res.status(404).json({ message: "Barrier not found" });
         }
@@ -49,9 +50,9 @@ export const updateBarrier = async (req, res) => {
 
 export const deleteBarrier = async (req, res) => {
     try {
-        const barrier = await barrier.findByPk(req.params.id);
-        if (barrier) {
-            await barrier.destroy();
+        const barrier1 = await barrier.findOne({ where: { name: req.params.name } });
+        if (barrier1) {
+            await barrier1.destroy();
             res.json({ message: "Barrier deleted successfully" });
         } else {
             res.status(404).json({ message: "Barrier not found" });

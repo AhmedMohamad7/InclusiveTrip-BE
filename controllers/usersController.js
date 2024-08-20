@@ -13,18 +13,19 @@ export const getUsers = async (req, res) => {
 
 
 export const getUser = async (req, res) => {
-    const { id } = req.params;
+    const { username } = req.params;
     try {
-        const userToGet = await user.findByPk(id);
+        const userToGet = await user.findOne({ where: { username } });
+        if (!userToGet) throw new Error('User not found');
         res.status(200).json(userToGet);
     } catch (error) {
         res.status(404).json({ message: error.message });
     }
 }
 export const createUser = async (req, res) => {
-    const { userName,firstName,lastName, email, password,roleId,profilePhoto,blocked } = req.body;
+    const { username,firstName,lastName, email, password,roleId,profilePhoto,blocked } = req.body;
     try {
-        const newUser = await user.create({ userName,firstName,lastName, email, password,roleId,profilePhoto,blocked });
+        const newUser = await user.create({ username,firstName,lastName, email, password,roleId,profilePhoto,blocked });
         res.status(201).json(newUser);
     } catch (error) {
         res.status(409).json({ message: error.message });
@@ -32,10 +33,11 @@ export const createUser = async (req, res) => {
 }
 
 export const updateUser = async (req, res) => {
-    const { id } = req.params;
+    const { username} = req.params;
     const { userName,firstName,lastName, email, password,roleId,profilePhoto,blocked } = req.body;
     try {
-        const userToUpdate = await user.findByPk(id);
+        const userToUpdate = await user.findOne({ where: { username } });
+        if (!userToUpdate) throw new Error('User not found');
         userToUpdate.userName = userName;
         userToUpdate.firstName = firstName;
         userToUpdate.lastName = lastName;
@@ -53,9 +55,12 @@ export const updateUser = async (req, res) => {
 
 
 export const deleteUser = async (req, res) => {
-    const { id } = req.params;
+    const { username } = req.params;
     try {
-        await user.destroy({ where: { id } });
+        const userToDelete = await user.findOne({ where: { username } });
+        if (!userToDelete) throw new Error('User not found');
+        await userToDelete.destroy();
+        
         res.status(200).json({ message: 'User deleted successfully' });
     } catch (error) {
         res.status(404).json({ message: error.message });
