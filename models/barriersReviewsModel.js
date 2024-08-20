@@ -5,6 +5,11 @@ import barrier from "./barriersModel.js";
 import review from "./reviewsModel.js";
 
 const barrierReview = sequelize.define("barriersReviews", {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+    },
     barrierId: {
         type: DataTypes.INTEGER,
         allowNull: false,
