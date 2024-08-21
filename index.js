@@ -10,6 +10,7 @@ import barrierReviewRouter from './routes/barriersReviewsRoute.js';
 import barrierRouter from './routes/barriersRoute.js';
 import FileRouter from './routes/fileUploadsRoute.js';
 import ProfilePhotosRouter from './routes/profilePhotosRoute.js';
+import authRouter from './routes/authRoute.js';
 import { join, dirname } from "path";
 import { fileURLToPath } from 'url';
 
@@ -36,7 +37,7 @@ app.use('/barriersReviews', barrierReviewRouter);
 app.use('/barriers', barrierRouter);
 app.use('/file-upload', FileRouter);
 app.use('/profilePhotos', ProfilePhotosRouter);
-
+app.use('/auth', authRouter);
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
