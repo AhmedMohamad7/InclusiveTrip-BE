@@ -37,7 +37,7 @@ const user = sequelize.define("users", {
     },
     profilePhoto: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
     },
     blocked: {
         type: DataTypes.BOOLEAN,

@@ -4,10 +4,11 @@ import { createFile,getFile,getFiles,deleteFile,updateFile } from "../controller
 import {upload} from "../controllers/file.js";
 import validateSchema from "../middlewares/validateSchema.js";
 import fileUploadSchema from "../schemas/fileUploadSchema.js";
+import limitFilesMiddleware from "../middlewares/limitFiles.js";
 
 const FileRouter = Router();
 
-FileRouter.post("/", upload.single("file"), createFile);
+FileRouter.post("/", upload.array("files",5),limitFilesMiddleware, createFile);
 FileRouter.get("/", getFiles);
 FileRouter.get("/:filename", getFile);
 FileRouter.delete("/:filename", deleteFile);
