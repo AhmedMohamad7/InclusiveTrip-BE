@@ -21,8 +21,8 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 const corsOptions = {
-  origin: 'http://localhost:5173', // Erlaubte Origin
-  credentials: true, // Erlaubt das Senden von Cookies
+  origin: 'http://localhost:5173',
+  credentials: true,
 };
 
 app.use(cors(corsOptions));
