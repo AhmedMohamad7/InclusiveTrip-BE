@@ -10,14 +10,23 @@ import barrierReviewRouter from './routes/barriersReviewsRoute.js';
 import barrierRouter from './routes/barriersRoute.js';
 import FileRouter from './routes/fileUploadsRoute.js';
 import ProfilePhotosRouter from './routes/profilePhotosRoute.js';
-import { join } from "path";
-const app = express();
+import { join, dirname } from "path";
+import { fileURLToPath } from 'url';
 
-const PORT=process.env.PORT || 3000;
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+const app = express();
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
-app.use(cors({ origin: '*' }));
-app.use(express.static(join(import.meta.dirname, "uploads")));
+
+const corsOptions = {
+  origin: 'http://localhost:5173', // Erlaubte Origin
+  credentials: true, // Erlaubt das Senden von Cookies
+};
+
+app.use(cors(corsOptions));
+app.use(express.static(join(__dirname, "uploads")));
 
 app.use('/users', userRoute);
 app.use('/roles', roleRoute);
@@ -29,5 +38,5 @@ app.use('/file-upload', FileRouter);
 app.use('/profilePhotos', ProfilePhotosRouter);
 
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-  });
+  console.log(`Server is running on port ${PORT}`);
+});

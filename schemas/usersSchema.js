@@ -7,9 +7,9 @@ const usersSchema = Joi.object({
     lastName: Joi.string().required(),
     email: Joi.string().email().required(),
     password: Joi.string().required(),
-    roleId: Joi.number().required(),   
-    profilePhoto: Joi.string().required(),
-    blocked: Joi.boolean().required(),
+    roleId: Joi.number().default(3),
+    profilePhoto: Joi.string().optional(),
+    blocked: Joi.boolean().default(false),
 
 });
 
