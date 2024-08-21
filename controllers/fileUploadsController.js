@@ -4,14 +4,24 @@ import { deleteFile1 } from "./file.js";
 
 export const createFile = async (req, res) => {
     try {
-        const file = new fileUpload({
-        fileName: req.file.filename, 
-        fileType: req.file.mimetype,
-        fileSize: req.file.size,
-        filePath: req.file.path,   
+        const files = req.files;
+        if (!files || files.length === 0) {
+            return res.status(400).json({ message: 'No files uploaded' });
+        }
+        const savedFiles = [];
+        for (const file of files) {
+        const newFile = new fileUpload({
+        fileName: file.filename, 
+        fileType: file.mimetype,
+        fileSize: file.size,
+        filePath: `http://localhost:3000/uploads/reviewsPhotos/${file.filename}`, 
+        reviewId: req.body.reviewId,  
         });
-        await file.save();
-        res.status(201).json(file);
+        const savedFile = await newFile.save();
+            savedFiles.push(savedFile);
+        }
+
+        res.status(201).json(savedFiles);
     }   catch (error) {
         res.status(400).json({ message: error.message });
     }

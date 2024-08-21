@@ -7,7 +7,7 @@ export const createProfilePhoto = async (req, res) => {
     try{
         const user = await users.findOne({ where: { id: req.params.userid } });
         if (!user) throw new Error("User not found");
-        user.profilePhoto = req.file.path;
+        user.profilePhoto = `http://localhost:3000/uploads/profilePhotos/${req.file.filename}`;
         await user.save();
         res.status(200).json(user);
     } catch (error) {
