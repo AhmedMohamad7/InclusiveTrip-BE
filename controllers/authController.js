@@ -11,7 +11,7 @@ export const register = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = new user({username,firstName,lastName,email,password:hashedPassword,roleId});
         await newUser.save();
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+        const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, {
         expiresIn: '7d'});
         const isProduction = process.env.NODE_ENV === 'production';
         const cookieOptions = {
@@ -34,7 +34,7 @@ export const signin = async (req, res) => {
         if(!existingUser) throw new Error("User doesn't exist");
         const isMatch = await bcrypt.compare(password, existingUser.password);
         if(!isMatch) throw new Error("Invalid credentials");
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+        const token = jwt.sign({ id: existingUser.id }, process.env.JWT_SECRET, {
             expiresIn: '7d'
           });
         const isProduction = process.env.NODE_ENV === 'production';
