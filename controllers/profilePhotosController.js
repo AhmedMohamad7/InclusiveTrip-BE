@@ -4,8 +4,9 @@ import { deleteFile2 } from "./profileFiles.js";
 
 
 export const createProfilePhoto = async (req, res) => {
+    const {userId}=req;
     try{
-        const user = await users.findOne({ where: { id: req.params.userid } });
+        const user = await users.findOne({ where: { id: userId} });
         if (!user) throw new Error("User not found");
         user.profilePhoto = `http://localhost:3000/uploads/profilePhotos/${req.file.filename}`;
         await user.save();
@@ -26,9 +27,11 @@ export const getProfilePhoto = async (req, res) => {
 }
 
 export const deleteProfilePhoto = async (req, res) => {
+    const {userId}=req;
     try {
         const user = await users.findOne({ where: { id: req.params.userid } });
         if (!user) throw new Error("User not found");
+        if(user.id !== userId) throw new Error("You are not allowed to delete this profile photo.");
         user.profilePhoto = null;
         await user.save();
         deleteFile2(req.params.id);
@@ -39,9 +42,11 @@ export const deleteProfilePhoto = async (req, res) => {
 }
 
 export const updateProfilePhoto = async (req, res) => {
+    const {userId}=req;
     try {
         const user = await users.findOne({ where: { id: req.params.userid } });
         if (!user) throw new Error("User not found");
+        if(user.id !== userId) throw new Error("You are not allowed to delete this profile photo.");
         user.profilePhoto = req.body.profilePhoto;
         await user.save();
         res.status(200).json(user);
