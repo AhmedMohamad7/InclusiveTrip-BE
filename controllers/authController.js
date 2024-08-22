@@ -7,7 +7,9 @@ export const register = async (req, res) => {
     try{
         const {username,firstName,lastName,email,password,roleId} = req.body;
         const alreadyExists = await user.findOne({where:{email}});
+        const userNameExists = await user.findOne({where:{username}});
         if(alreadyExists) throw new Error("User already exists");
+        if(userNameExists) throw new Error("Username is taken");
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = new user({username,firstName,lastName,email,password:hashedPassword,roleId});
         await newUser.save();

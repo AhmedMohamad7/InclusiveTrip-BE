@@ -22,16 +22,20 @@ export const getUser = async (req, res) => {
 }
 
 export const createUser = async (req, res) => {
-    const { username, firstName, lastName, email, password, roleId = 3, profilePhoto, blocked = false } = req.body;
+    const { username, firstName, lastName, email, password} = req.body;
     try {
         // Existiert die email bereits?
         const existingUser = await user.findOne({ where: { email } });
         if (existingUser) {
             return res.status(409).json({ message: 'Email already exists' });
         }
+        // Existiert der username bereits?
+        const existingUsername = await user.findOne({ where: { username } });
+        if (existingUsername) {
+            return res.status(409).json({ message: 'Username already exists' });
+        }
 
-
-        const newUser = await user.create({ username, firstName, lastName, email, password, roleId, profilePhoto, blocked });
+        const newUser = await user.create({ username, firstName, lastName, email, password });
         res.status(201).json(newUser);
     } catch (error) {
         res.status(409).json({ message: error.message });
