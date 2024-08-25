@@ -13,16 +13,16 @@ export const register = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = new user({ username, firstName, lastName, email, password: hashedPassword, roleId });
         await newUser.save();
-        const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, {
-            expiresIn: '7d'
-        });
-        const isProduction = process.env.NODE_ENV === 'production';
-        const cookieOptions = {
-            httpOnly: true,
-            sameSite: isProduction ? 'None' : 'Lax',
-            secure: isProduction
-        };
-        res.cookie('token', token, cookieOptions);
+        // const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, {
+        //     expiresIn: '7d'
+        // });
+        // const isProduction = process.env.NODE_ENV === 'production';
+        // const cookieOptions = {
+        //     httpOnly: true,
+        //     sameSite: isProduction ? 'None' : 'Lax',
+        //     secure: isProduction
+        // };
+        // res.cookie('token', token, cookieOptions);
         res.status(201).json({ success: 'welcome on board' });
     } catch (error) {
         res.status(400).json({ message: error.message });
