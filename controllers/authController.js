@@ -5,13 +5,14 @@ import user from '../models/usersModel.js';
 
 export const register = async (req, res) => {
     try {
-        const { username, firstName, lastName, email, password, roleId } = req.body;
+        const {firstName, lastName, email, password, roleId } = req.body;
+        if (!firstName || !lastName || !email || !password) {
+            return res.status(400).json({ message: 'Please provide firstName, lastName,email and password in the body' });
+        }
         const alreadyExists = await user.findOne({ where: { email } });
-        const userNameExists = await user.findOne({ where: { username } });
         if (alreadyExists) throw new Error("User already exists");
-        if (userNameExists) throw new Error("Username is taken");
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = new user({ username, firstName, lastName, email, password: hashedPassword, roleId });
+        const newUser = new user({firstName, lastName, email, password: hashedPassword, roleId });
         await newUser.save();
         // const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, {
         //     expiresIn: '7d'
@@ -36,7 +37,7 @@ export const signin = async (req, res) => {
         const existingUser = await user.findOne({ where: { email } });
         if (!existingUser) throw new Error("User doesn't exist");
         const isMatch = await bcrypt.compare(password, existingUser.password);
-        if (!isMatch) throw new Error("Invalid credentials");
+        if (!isMatch) throw new Error("wrong password");
         const token = jwt.sign({ id: existingUser.id }, process.env.JWT_SECRET, {
             expiresIn: '7d'
         });
@@ -73,7 +74,7 @@ export const signout = async (req, res) => {
 export const me = async (req, res) => {
     try {
         const myUser = await user.findOne({ where: { id: req.userId } });
-        if (!myUser) throw new Error("User not found");
+        if (!myUser) throw new Error("please login");
         res.status(200).json(myUser);
     }
     catch (error) {

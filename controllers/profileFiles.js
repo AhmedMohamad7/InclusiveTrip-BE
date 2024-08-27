@@ -28,7 +28,6 @@ export const uploadProfilePhotos = multer({ storage, fileFilter, limits: { fileS
 export const deleteFile2 = async (filename) => {
   const filePath = path.join("uploads/profilePhotos", filename);
 
-
   try{
   await access(filePath);
   await fs.unlink(filePath);
