@@ -13,6 +13,7 @@ export const getRoles = async (req, res) => {
 export const getRole = async (req, res) => {
     const { id } = req.params;
     try {
+        if (!id) throw new Error('Please provide id in the params');
         const roleToGet = await role.findByPk(id);
         res.status(200).json(roleToGet);
     } catch (error) {
@@ -23,6 +24,7 @@ export const getRole = async (req, res) => {
 export const createRole = async (req, res) => {
     const { type } = req.body;
     try {
+        if (!type) throw new Error('Please provide type in the body');
         const newRole = await role.create({ type });
         res.status(201).json(newRole);
     } catch (error) {
@@ -34,6 +36,8 @@ export const updateRole = async (req, res) => {
     const { id } = req.params;
     const { type} = req.body;
     try {
+        if (!type) throw new Error('Please provide type in the body');
+        if (!id) throw new Error('Please provide id in the params');
         const roleToUpdate = await role.findByPk(id);
         roleToUpdate.type = type;
         await roleToUpdate.save();
@@ -47,6 +51,7 @@ export const updateRole = async (req, res) => {
 export const deleteRole = async (req, res) => {
     const { id } = req.params;
     try {
+        if (!id) throw new Error('Please provide id in the params');
         const role1 = await role.findByPk(id);
         if (!role1) throw new Error('Role not found');
         await role1.destroy();

@@ -13,6 +13,7 @@ export const getPlaceCategories = async (req, res) => {
 export const getPlaceCategory = async (req, res) => {
     const { type } = req.params;
     try {
+        if (!type) throw new Error("please provide type in the params");
         const placeCategoryToGet = await placeCategory.findOne({ where: { type } });
         if (!placeCategoryToGet) throw new Error("No place category found.");
         res.status(200).json(placeCategoryToGet);
@@ -24,6 +25,7 @@ export const getPlaceCategory = async (req, res) => {
 export const createPlaceCategory = async (req, res) => {
     const { type } = req.body;
     try {
+        if (!type) throw new Error("please provide type in the body");
         const newPlaceCategory = await placeCategory.create({ type});
         res.status(201).json(newPlaceCategory);
     } catch (error) {
@@ -35,6 +37,8 @@ export const updatePlaceCategory = async (req, res) => {
     const { id } = req.params;
     const { type } = req.body;
     try {
+        if (!type) throw new Error("please provide type in the body");
+        if (!id) throw new Error("please provide id in the params");
         const updatedPlaceCategory = await placeCategory.update({ type }, { where: { id } });
         if (!updatedPlaceCategory) throw new Error("An error occurred while updating the place category."); 
         res.status(200).json(updatedPlaceCategory);
@@ -46,6 +50,7 @@ export const updatePlaceCategory = async (req, res) => {
 export const deletePlaceCategory = async (req, res) => {
     const { id } = req.params;
     try {
+        if (!id) throw new Error("please provide id in the params");
         const placeCategory1 = await placeCategory.findOne({ where: { id } });
         if (!placeCategory1) throw new Error("Place category not found.");
         await placeCategory1.destroy();

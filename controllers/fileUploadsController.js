@@ -8,6 +8,9 @@ export const createFile = async (req, res) => {
         if (!files || files.length === 0) {
             return res.status(400).json({ message: 'No files uploaded' });
         }
+        if(files.length > 5) {
+            return res.status(400).json({ message: 'You can only upload a maximum of 5 files' });
+        }
         const savedFiles = [];
         for (const file of files) {
         const newFile = new fileUpload({
@@ -38,6 +41,7 @@ export const getFiles = async (req, res) => {
 
 export const getFile = async (req, res) => {
     try {
+        if (!req.params.filename) throw new Error("must provide filename in the params");
         const file = await fileUpload.findOne({ where: { fileName: req.params.filename } });
         if (!file) throw new Error("File not found");
         res.status(200).json(file);
@@ -48,6 +52,7 @@ export const getFile = async (req, res) => {
 
 export const deleteFile = async (req, res) => {
     try {
+        if (!req.params.filename) throw new Error("must provide filename in the params");
         const file = await fileUpload.findOne({ where: { fileName: req.params.filename } });
         if (!file) throw new Error("File not found");
         await file.destroy();
@@ -60,6 +65,7 @@ export const deleteFile = async (req, res) => {
 
 export const updateFile = async (req, res) => {
     try {
+        if (!req.params.filename) throw new Error("must provide filename in the params");
         const file = await fileUpload.findOne({ where: { fileName: req.params.filename } });
         if (!file) throw new Error("File not found");
         file.fileName = req.body.fileName;

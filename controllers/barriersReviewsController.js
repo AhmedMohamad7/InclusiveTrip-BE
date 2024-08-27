@@ -11,9 +11,10 @@ export const getBarriersReviews = async (req, res) => {
 
 export const getBarrierReview = async (req, res) => {
     try {
+        if (!req.params.id) throw new Error("must provide id in the params");
         const barrierReview1 = await barrierReview.findOne({ where: { id: req.params.id } });
         if (!barrierReview1) throw new Error("Barrier Review not found");
-        res.json(barrierReview1);
+        res.status(200).json(barrierReview1);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -22,6 +23,7 @@ export const getBarrierReview = async (req, res) => {
 export const createBarrierReview = async (req, res) => {
     const { barrierId, reviewId, reviews } = req.body;
     try {
+        if (!barrierId || !reviewId || !reviews) throw new Error("BarrierId, reviewId and reviews are required");
         const newBarrierReview = await barrierReview.create({ barrierId, reviewId, reviews });
         res.status(201).json(newBarrierReview);
     } catch (error) {
@@ -32,6 +34,8 @@ export const createBarrierReview = async (req, res) => {
 export const updateBarrierReview = async (req, res) => {
     const { barrierId, reviewId, reviews } = req.body;
     try {
+        if (!barrierId || !reviewId || !reviews) throw new Error("BarrierId, reviewId and reviews are required");
+        if (!req.params.id) throw new Error("must provide id in the params");
         const barrierReview1 = await barrierReview.findOne({ where: { id: req.params.id } });
         if (barrierReview1) {
             barrierReview1.barrierId = barrierId;
@@ -49,6 +53,7 @@ export const updateBarrierReview = async (req, res) => {
 
 export const deleteBarrierReview = async (req, res) => {
     try {
+        if (!req.params.id) throw new Error("must provide id in the params");
         const barrierReview1 = await barrierReview.findOne({ where: { id: req.params.id } });
         if (barrierReview1) {
             await barrierReview1.destroy();

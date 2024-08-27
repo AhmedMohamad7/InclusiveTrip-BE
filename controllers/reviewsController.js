@@ -13,6 +13,7 @@ export const getReviews = async (req, res) => {
 export const getReview = async (req, res) => {
     const {gpsCode } = req.params;
     try {
+        if (!gpsCode) throw new Error("Please provide gpsCode in the params");
         const reviewToGet = await review.findOne({ where: { gpsCode } });
         if (!reviewToGet) throw new Error("No review found.");
         res.status(200).json(reviewToGet);
@@ -25,6 +26,8 @@ export const createReview = async (req, res) => {
     const { gpsCode, comment ,placeCategoriesId} = req.body;
     const { userId } = req;
     try {
+        if (!gpsCode || !comment || !placeCategoriesId) throw new Error("Please provide gpsCode and comment and placeCategoryId in the body");
+        if (!userId) throw new Error("Please login first");
         const newReview = await review.create({ gpsCode, comment,placeCategoriesId,userId });
         res.status(201).json(newReview);
     } catch (error) {
@@ -37,6 +40,9 @@ export const updateReview = async (req, res) => {
     const { gpsCode, comment ,placeCategoriesId} = req.body;
     const { userId } = req;
     try {
+        if (!gpsCode || !comment || !placeCategoriesId) throw new Error("Please provide gpsCode and comment and placeCategoryId in the body");
+        if (!gpscode) throw new Error("please provide gpscode in the params");
+        if (!userId) throw new Error("Please login first");
         const updatedReview = await review.findOne({ where: { gpsCode:gpscode } });
         if (!updatedReview) throw new Error("Review not found.");
         if(updatedReview.userId !== userId) throw new Error("You are not allowed to update this review.");
@@ -52,6 +58,8 @@ export const deleteReview = async (req, res) => {
     const { gpscode } = req.params;
     const { userId } = req;
     try {
+        if (!gpscode) throw new Error("please provide gpscode in the params");
+        if (!userId) throw new Error("Please login first");
         const review1 = await review.findOne({ where: { gpsCode:gpscode } });
         if (!review1) throw new Error("Review not found.");
         if(review1.userId !== userId) throw new Error("You are not allowed to delete this review.");

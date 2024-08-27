@@ -6,6 +6,8 @@ import { deleteFile2 } from "./profileFiles.js";
 export const createProfilePhoto = async (req, res) => {
     const {userId}=req;
     try{
+        if(!req.file) throw new Error("Please upload a file");
+        if(!userId) throw new Error("Please login first");
         const user = await users.findOne({ where: { id: userId} });
         if (!user) throw new Error("User not found");
         user.profilePhoto = `http://localhost:3000/uploads/profilePhotos/${req.file.filename}`;
@@ -18,6 +20,7 @@ export const createProfilePhoto = async (req, res) => {
 
 export const getProfilePhoto = async (req, res) => {
     try {
+        if (!req.params.userid) throw new Error("Please provide userid in the params");
         const user = await users.findOne({ where: { id: req.params.userid } });
         if (!user) throw new Error("User not found");
         res.status(200).json(user.profilePhoto);
@@ -29,6 +32,8 @@ export const getProfilePhoto = async (req, res) => {
 export const deleteProfilePhoto = async (req, res) => {
     const {userId}=req;
     try {
+        if(!userId) throw new Error("Please login ");
+        if (!req.params.userid) throw new Error("Please provide userid in the params");
         const user = await users.findOne({ where: { id: req.params.userid } });
         if (!user) throw new Error("User not found");
         if(user.id !== userId) throw new Error("You are not allowed to delete this profile photo.");
@@ -44,6 +49,8 @@ export const deleteProfilePhoto = async (req, res) => {
 export const updateProfilePhoto = async (req, res) => {
     const {userId}=req;
     try {
+        if(!userId) throw new Error("Please login ");
+        if (!req.params.userid) throw new Error("Please provide userid in the params");
         const user = await users.findOne({ where: { id: req.params.userid } });
         if (!user) throw new Error("User not found");
         if(user.id !== userId) throw new Error("You are not allowed to delete this profile photo.");

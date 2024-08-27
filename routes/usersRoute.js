@@ -8,9 +8,9 @@ const usersRoute = Router();
 
 
 usersRoute.get('/', getUsers);
-usersRoute.get('/:username', getUser);
+usersRoute.get('/:id', getUser);
 usersRoute.post('/',validateSchema(usersSchema), createUser);
-usersRoute.put('/:username',validateSchema(usersSchema), updateUser);
-usersRoute.delete('/:username', deleteUser);
+usersRoute.put('/:id',validateSchema(usersSchema), updateUser);
+usersRoute.delete('/:id', deleteUser);
 
 export default usersRoute;
