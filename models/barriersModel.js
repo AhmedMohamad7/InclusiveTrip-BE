@@ -9,7 +9,7 @@ const barrier = sequelize.define("barriers", {
     },
     description: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
     },
     selected: {
         type: DataTypes.BOOLEAN,

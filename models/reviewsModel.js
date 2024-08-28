@@ -6,7 +6,6 @@ const review = sequelize.define("reviews", {
     gpsCode: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
     },
     comment : {
         type: DataTypes.STRING,
