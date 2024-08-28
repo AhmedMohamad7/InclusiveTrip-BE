@@ -86,6 +86,7 @@ The following endpoints are available:
 
 - **POST /barriers** Create a new barrier.
 - **GET /barriers** Get all Barriers.
+- **GET /barriers/selected** Get all selected Barriers.
 - **GET /barriers/:name** Get a single barrier by name.
 - **PUT /barriers/:name** Update an existing barrier by name.
 - **DELETE /barriers/:name* Delete an barrier by name.

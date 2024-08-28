@@ -4,12 +4,20 @@ import barrier from "../models/barriersModel.js";
 export const getBarriers = async (req, res) => {
     try {
         const barriers = await barrier.findAll();
-        res.json(barriers);
+        res.status(200).json(barriers);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
 
+export const getSelectedBarriers = async (req, res) => {
+    try {
+        const barriers = await barrier.findAll({ where: { selected: true } });
+        res.status(200).json(barriers);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
 export const getBarrier = async (req, res) => {
     try {
         const barrier1 = await barrier.findOne({ where: { name: req.params.name } });
