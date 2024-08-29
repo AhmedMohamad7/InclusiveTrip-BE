@@ -28,7 +28,6 @@ export const getProfilePhoto = async (req, res) => {
     res.status(404).json({ message: error.message });
   }
 };
-
 export const deleteProfilePhoto = async (req, res) => {
   const { userId } = req;
   try {
@@ -39,9 +38,11 @@ export const deleteProfilePhoto = async (req, res) => {
     if (!user) throw new Error("User not found");
     if (user.id !== userId)
       throw new Error("You are not allowed to delete this profile photo.");
+
+    const profilePhotoPath = user.profilePhoto.split("/").pop(); // Extrahiert den Dateinamen aus der URL
     user.profilePhoto = null;
     await user.save();
-    deleteFile2(req.params.id);
+    deleteFile2(profilePhotoPath); // Übergeben Sie den Dateinamen an deleteFile2
     res.status(200).json({ message: "Profile photo deleted" });
   } catch (error) {
     res.status(404).json({ message: error.message });
