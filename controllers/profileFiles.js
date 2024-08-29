@@ -1,8 +1,13 @@
 import multer from "multer";
 import fs from "fs";
 import path from "path";
+import { fileURLToPath } from "url";
 
-const allowedMimeTypes = ["image/jpeg", "image/jpg","image/png"];
+// Hilfsfunktion, um den Verzeichnisnamen zu ermitteln
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const allowedMimeTypes = ["image/jpeg", "image/jpg", "image/png"];
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -22,18 +27,24 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-export const uploadProfilePhotos = multer({ storage, fileFilter, limits: { fileSize: 5242880 } });
+export const uploadProfilePhotos = multer({
+  storage,
+  fileFilter,
+  limits: { fileSize: 5242880 },
+});
 
-
-export const deleteFile2 = async (filename) => {
-  const filePath = path.join("uploads/profilePhotos", filename);
-
-  try{
-  await access(filePath);
-  await fs.unlink(filePath);
-  console.log(`File ${filename} deleted successfully.`);
-  }
-  catch(err){
-    console.log("file not found");
-  }
+export const deleteFile2 = (filePath) => {
+  const fullPath = path.join(
+    __dirname,
+    "..",
+    "uploads/profilePhotos",
+    filePath
+  );
+  fs.unlink(fullPath, (err) => {
+    if (err) {
+      console.error(`Error deleting file: ${err}`);
+    } else {
+      console.log(`File deleted: ${fullPath}`);
+    }
+  });
 };
