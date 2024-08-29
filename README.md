@@ -52,6 +52,7 @@ The following endpoints are available:
 
 - **POST /reviews** Create a new review.
 - **GET /reviews** Get all reviews.
+- **GET /reviews/user** Get all reviews for the signed in user.
 - **GET /reviews/:gpscode* Get a single review by gpscode.
 - **PUT /reviews/:gpscode** Update an existing review by gpscode.
 - **DELETE /reviews/:gpscode** Delete an review by gpscode.

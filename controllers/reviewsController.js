@@ -1,6 +1,6 @@
 
 import review from "../models/reviewsModel.js";
-
+import user from "../models/usersModel.js";
 export const getReviews = async (req, res) => {
     try {
         const reviews = await review.findAll();
@@ -9,7 +9,16 @@ export const getReviews = async (req, res) => {
         res.status(404).json({ message: error.message });
     }
 }
-
+export const getReviewsByUser = async (req, res) => {
+    const { userId } = req;
+    try {
+        if (!userId) throw new Error("Please login first");
+        const reviews = await review.findAll({ where: { userId } });
+        res.status(200).json(reviews);
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
 export const getReview = async (req, res) => {
     const {gpsCode } = req.params;
     try {
