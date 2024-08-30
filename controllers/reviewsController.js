@@ -9,6 +9,14 @@ export const getReviews = async (req, res) => {
         res.status(404).json({ message: error.message });
     }
 }
+export const getReviewsCount = async (req, res) => {
+    try {
+        const reviews = await review.count();
+        res.status(200).json(reviews);
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
 export const getReviewsByUser = async (req, res) => {
     const { userId } = req;
     try {
