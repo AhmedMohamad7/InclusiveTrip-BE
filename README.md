@@ -44,6 +44,7 @@ The following endpoints are available:
 
 - **POST /users** Create a new user.
 - **GET /users** Get all users.
+- **GET /users/count** Get the count of the users.
 - **GET /users/:id** Get a single user by id.
 - **PUT /users/:id** Update an existing user by id.
 - **DELETE /users/:id** Delete an user by id.
@@ -52,6 +53,7 @@ The following endpoints are available:
 
 - **POST /reviews** Create a new review.
 - **GET /reviews** Get all reviews.
+- **GET /reviews/count** Get the count of reviews.
 - **GET /reviews/user** Get all reviews for the signed in user.
 - **GET /reviews/:gpscode* Get a single review by gpscode.
 - **PUT /reviews/:gpscode** Update an existing review by gpscode.
@@ -69,7 +71,8 @@ The following endpoints are available:
 
 - **POST /placeCategories** Create a new placeCategory.
 - **GET /placeCategories** Get all placeCategories.
-- **GET /placeCategories/:type** Get a single placeCategory by type.
+- **GET /placeCategories/selected** Get all selected placecategories.
+- **GET /placeCategories/:name** Get a single placeCategory by name.
 - **PUT /placeCategories/:id** Update an existing placeCategory by id.
 - **DELETE /placeCategories/:id* Delete an placeCategory by id.
 

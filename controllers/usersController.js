@@ -9,7 +9,14 @@ export const getUsers = async (req, res) => {
         res.status(404).json({ message: error.message });
     }
 }
-
+export const getCountUsers = async (req, res) => {
+    try {
+        const users = await user.count();
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
 export const getUser = async (req, res) => {
     const { id } = req.params;
     try {
