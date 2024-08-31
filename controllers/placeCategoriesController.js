@@ -30,9 +30,9 @@ export const getSelectedPlaceCategories = async (req, res) => {
     }
 }
 export const createPlaceCategory = async (req, res) => {
-    const {name,icon,description,selected} = req.body;
+    const { name, searchName, icon, iconColor, description, selected } = req.body;
     try {
-        const newPlaceCategory = await placeCategory.create({ name,icon,description,selected });
+        const newPlaceCategory = await placeCategory.create({ name, searchName, icon, iconColor, description, selected });
         res.status(201).json(newPlaceCategory);
     } catch (error) {
         res.status(409).json({ message: error.message });
@@ -41,12 +41,12 @@ export const createPlaceCategory = async (req, res) => {
 
 export const updatePlaceCategory = async (req, res) => {
     const { id } = req.params;
-    const { name,icon,description,selected } = req.body;
+    const { name, searchName, icon, iconColor, description, selected } = req.body;
     try {
         if (!name) throw new Error("please provide type in the body");
         if (!id) throw new Error("please provide id in the params");
-        const updatedPlaceCategory = await placeCategory.update({ name,icon,description,selected }, { where: { id } });
-        if (!updatedPlaceCategory) throw new Error("An error occurred while updating the place category."); 
+        const updatedPlaceCategory = await placeCategory.update({ name, searchName, icon, iconColor, description, selected }, { where: { id } });
+        if (!updatedPlaceCategory) throw new Error("An error occurred while updating the place category.");
         res.status(200).json(updatedPlaceCategory);
     } catch (error) {
         res.status(409).json({ message: error.message });

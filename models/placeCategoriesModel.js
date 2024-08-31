@@ -7,7 +7,15 @@ const placeCategory = sequelize.define("placeCategories", {
         type: DataTypes.STRING,
         allowNull: false,
     },
+    searchName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
     icon: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    iconColor: {
         type: DataTypes.STRING,
         allowNull: false,
     },
@@ -20,6 +28,6 @@ const placeCategory = sequelize.define("placeCategories", {
         allowNull: false,
         defaultValue: false,
     },
-    });
+});
 
 export default placeCategory;
