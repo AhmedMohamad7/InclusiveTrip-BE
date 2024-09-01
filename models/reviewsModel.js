@@ -3,11 +3,15 @@ import { DataTypes } from "sequelize";
 
 
 const review = sequelize.define("reviews", {
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
     gpsCode: {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    comment : {
+    comment: {
         type: DataTypes.STRING,
         allowNull: false,
     },
