@@ -5,25 +5,18 @@ import user from '../models/usersModel.js';
 
 export const register = async (req, res) => {
     try {
-        const {firstName, lastName, email, password, roleId } = req.body;
+        const { firstName, lastName, email, password, roleId } = req.body;
         if (!firstName || !lastName || !email || !password) {
             return res.status(400).json({ message: 'Please provide firstName, lastName,email and password in the body' });
         }
         const alreadyExists = await user.findOne({ where: { email } });
-        if (alreadyExists) throw new Error("User already exists");
+        if (alreadyExists) {
+            return res.status(400).json({ message: "User already exists" });
+        }
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = new user({firstName, lastName, email, password: hashedPassword, roleId });
+        const newUser = new user({ firstName, lastName, email, password: hashedPassword, roleId });
         await newUser.save();
-        // const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, {
-        //     expiresIn: '7d'
-        // });
-        // const isProduction = process.env.NODE_ENV === 'production';
-        // const cookieOptions = {
-        //     httpOnly: true,
-        //     sameSite: isProduction ? 'None' : 'Lax',
-        //     secure: isProduction
-        // };
-        // res.cookie('token', token, cookieOptions);
+
         res.status(201).json({ success: 'welcome on board' });
     } catch (error) {
         res.status(400).json({ message: error.message });
@@ -34,26 +27,35 @@ export const register = async (req, res) => {
 export const signin = async (req, res) => {
     try {
         const { email, password } = req.body;
+
         const existingUser = await user.findOne({ where: { email } });
-        if (!existingUser) throw new Error("User doesn't exist");
+        if (!existingUser) {
+            return res.status(400).json({ message: "User doesn't exist" });
+        }
         const isMatch = await bcrypt.compare(password, existingUser.password);
-        if (!isMatch) throw new Error("wrong password");
+        if (!isMatch) {
+            return res.status(400).json({ message: "Incorrect password" });
+        }
         const token = jwt.sign({ id: existingUser.id }, process.env.JWT_SECRET, {
             expiresIn: '7d'
         });
+
         const isProduction = process.env.NODE_ENV === 'production';
         const cookieOptions = {
             httpOnly: false,
             sameSite: isProduction ? 'None' : 'Lax',
             secure: isProduction
         };
+
+        // Set token in cookies and respond
         res.cookie('token', token, cookieOptions);
-        res.status(201).json({ success: 'welcome back' });
-        console.log(token);
+        return res.status(200).json({ success: 'Welcome back' });
+
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        console.error('Signin error:', error);
+        res.status(500).json({ message: 'An error occurred while signing in.' });
     }
-}
+};
 
 export const signout = async (req, res) => {
     try {
@@ -74,7 +76,9 @@ export const signout = async (req, res) => {
 export const me = async (req, res) => {
     try {
         const myUser = await user.findOne({ where: { id: req.userId } });
-        if (!myUser) throw new Error("please login");
+        if (!myUser) {
+            return res.status(400).json({ message: "please login" });
+        }
         res.status(200).json(myUser);
     }
     catch (error) {
