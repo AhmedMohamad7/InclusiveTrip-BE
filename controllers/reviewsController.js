@@ -40,6 +40,17 @@ export const getReview = async (req, res) => {
     }
 }
 
+export const getReviewById = async (req, res) => {
+    const {reviewId}=req.params;
+    try {
+        if (!reviewId) throw new Error("Please provide reviewId in the params");
+        const reviewToGet = await review.findOne({ where: { id: reviewId } });
+        if (!reviewToGet) throw new Error("No review found.");
+        res.status(200).json(reviewToGet);
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
 export const createReview = async (req, res) => {
     const { placeName, placeId, comment, placeCategoryId } = req.body;
     const { userId } = req;
