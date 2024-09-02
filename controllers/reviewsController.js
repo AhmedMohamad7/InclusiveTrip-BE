@@ -46,6 +46,8 @@ export const createReview = async (req, res) => {
     try {
         if (!placeId || !comment || !placeCategoryId) throw new Error("Please provide placeId and comment and placeCategoryId in the body");
         if (!userId) throw new Error("Please login first");
+        const hasTheUserReviewed = await review.findOne({ where: { placeId, userId } });
+        if (hasTheUserReviewed) throw new Error("You have already reviewed this place.");
         const newReview = await review.create({ placeName, placeId, comment, placeCategoryId, userId });
         res.status(201).json(newReview);
     } catch (error) {
