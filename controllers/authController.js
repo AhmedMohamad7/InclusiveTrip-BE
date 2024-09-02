@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import user from '../models/usersModel.js';
+import User from '../models/UserModel.js';
 
 
 export const register = async (req, res) => {
@@ -9,12 +9,12 @@ export const register = async (req, res) => {
         if (!firstName || !lastName || !email || !password) {
             return res.status(400).json({ message: 'Please provide firstName, lastName,email and password in the body' });
         }
-        const alreadyExists = await user.findOne({ where: { email } });
+        const alreadyExists = await User.findOne({ where: { email } });
         if (alreadyExists) {
             return res.status(400).json({ message: "User already exists" });
         }
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = new user({ firstName, lastName, email, password: hashedPassword, roleId });
+        const newUser = new User({ firstName, lastName, email, password: hashedPassword, roleId });
         await newUser.save();
 
         res.status(201).json({ success: 'welcome on board' });
@@ -28,7 +28,7 @@ export const signin = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        const existingUser = await user.findOne({ where: { email } });
+        const existingUser = await User.findOne({ where: { email } });
         if (!existingUser) {
             return res.status(400).json({ message: "User doesn't exist" });
         }
@@ -75,7 +75,7 @@ export const signout = async (req, res) => {
 
 export const me = async (req, res) => {
     try {
-        const myUser = await user.findOne({ where: { id: req.userId } });
+        const myUser = await User.findOne({ where: { id: req.userId } });
         if (!myUser) {
             return res.status(400).json({ message: "please login" });
         }

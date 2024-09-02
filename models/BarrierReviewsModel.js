@@ -1,10 +1,10 @@
 import sequelize from "../db/index.js";
 import { DataTypes } from "sequelize";
 
-import barrier from "./barriersModel.js";
-import review from "./reviewsModel.js";
+import Barrier from "./BarrierModel.js";
+import Review from "./ReviewModel.js";
 
-const barrierReview = sequelize.define("barriersReviews", {
+const BarrierReview = sequelize.define("barriersReviews", {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -14,7 +14,7 @@ const barrierReview = sequelize.define("barriersReviews", {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: barrier,
+            model: Barrier,
             key: "id",
         },
     },
@@ -22,7 +22,7 @@ const barrierReview = sequelize.define("barriersReviews", {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: review,
+            model: Review,
             key: "id",
         },
     },
@@ -32,4 +32,4 @@ const barrierReview = sequelize.define("barriersReviews", {
     },
 });
 
-export default barrierReview;
+export default BarrierReview;
