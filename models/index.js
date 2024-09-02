@@ -1,11 +1,11 @@
 import sequelize from "../db/index.js";
-import Barrier from "./BarrierModel.js";
 import Review from "./ReviewModel.js";
 import BarrierReview from "./BarrierReviewsModel.js";
 import PlaceCategory from "./PlaceCategoryModel.js";
 import FileUpload from "./FileUploadModel.js";
 import User from "./UserModel.js";
 import Role from "./RoleModel.js";
+import Barrier from "./BarrierModel.js";
 
 
 User.hasMany(Review, { foreignKey: "userId" });
