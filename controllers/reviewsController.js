@@ -29,10 +29,10 @@ export const getReviewsByUser = async (req, res) => {
     }
 }
 export const getReview = async (req, res) => {
-    const { gpsCode } = req.params;
+    const { placeId } = req.params;
     try {
-        if (!gpsCode) throw new Error("Please provide gpsCode in the params");
-        const reviewToGet = await review.findOne({ where: { gpsCode } });
+        if (!placeId) throw new Error("Please provide placeId in the params");
+        const reviewToGet = await review.findOne({ where: { placeId } });
         if (!reviewToGet) throw new Error("No review found.");
         res.status(200).json(reviewToGet);
     } catch (error) {
@@ -41,12 +41,12 @@ export const getReview = async (req, res) => {
 }
 
 export const createReview = async (req, res) => {
-    const { name, gpsCode, comment, placeCategoriesId } = req.body;
+    const { placeName, placeId, comment, placeCategoryId } = req.body;
     const { userId } = req;
     try {
-        if (!gpsCode || !comment || !placeCategoriesId) throw new Error("Please provide gpsCode and comment and placeCategoryId in the body");
+        if (!placeId || !comment || !placeCategoryId) throw new Error("Please provide placeId and comment and placeCategoryId in the body");
         if (!userId) throw new Error("Please login first");
-        const newReview = await review.create({ name, gpsCode, comment, placeCategoriesId, userId });
+        const newReview = await review.create({ placeName, placeId, comment, placeCategoryId, userId });
         res.status(201).json(newReview);
     } catch (error) {
         res.status(409).json({ message: error.message });
@@ -54,17 +54,17 @@ export const createReview = async (req, res) => {
 }
 
 export const updateReview = async (req, res) => {
-    const { gpscode } = req.params;
-    const { gpsCode, comment, placeCategoriesId } = req.body;
+    const { review } = req.params;
+    const { placeName, placeId, comment, placeCategoryId } = req.body;
     const { userId } = req;
     try {
-        if (!gpsCode || !comment || !placeCategoriesId) throw new Error("Please provide gpsCode and comment and placeCategoryId in the body");
-        if (!gpscode) throw new Error("please provide gpscode in the params");
+        if (!placeId || !comment || !placeCategoryId) throw new Error("Please provide placeId and comment and placeCategoryId in the body");
+        if (!placeId) throw new Error("please provide placeId in the params");
         if (!userId) throw new Error("Please login first");
-        const updatedReview = await review.findOne({ where: { gpsCode: gpscode } });
+        const updatedReview = await review.findOne({ where: { id: review } });
         if (!updatedReview) throw new Error("Review not found.");
         if (updatedReview.userId !== userId) throw new Error("You are not allowed to update this review.");
-        await updatedReview.update({ name, gpsCode, comment, placeCategoriesId, userId });
+        await updatedReview.update({ placeName, placeId, comment, placeCategoryId, userId });
         await updatedReview.save();
         res.status(200).json(updatedReview);
     } catch (error) {
@@ -73,12 +73,12 @@ export const updateReview = async (req, res) => {
 }
 
 export const deleteReview = async (req, res) => {
-    const { gpscode } = req.params;
+    const { placeId } = req.params;
     const { userId } = req;
     try {
-        if (!gpscode) throw new Error("please provide gpscode in the params");
+        if (!placeId) throw new Error("please provide placeId in the params");
         if (!userId) throw new Error("Please login first");
-        const review1 = await review.findOne({ where: { gpsCode: gpscode } });
+        const review1 = await review.findOne({ where: { placeId: placeId } });
         if (!review1) throw new Error("Review not found.");
         if (review1.userId !== userId) throw new Error("You are not allowed to delete this review.");
         await review1.destroy();

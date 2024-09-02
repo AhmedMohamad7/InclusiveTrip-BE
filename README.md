@@ -55,9 +55,9 @@ The following endpoints are available:
 - **GET /reviews** Get all reviews.
 - **GET /reviews/count** Get the count of reviews.
 - **GET /reviews/user** Get all reviews for the signed in user.
-- **GET /reviews/:gpscode* Get a single review by gpscode.
-- **PUT /reviews/:gpscode** Update an existing review by gpscode.
-- **DELETE /reviews/:gpscode** Delete an review by gpscode.
+- **GET /reviews/:placeId* Get a single review by placeId.
+- **PUT /reviews/:placeId** Update an existing review by placeId.
+- **DELETE /reviews/:placeId** Delete an review by placeId.
 
 ### Auth
 

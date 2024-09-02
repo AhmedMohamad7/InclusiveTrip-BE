@@ -31,7 +31,6 @@ export const getBarrier = async (req, res) => {
 export const createBarrier = async (req, res) => {
     const { name, description, selected } = req.body;
     try {
-        if (!name || !description || !selected) throw new Error("Name and description and selcted values are required");
         const newBarrier = await barrier.create({ name, description, selected });
         res.status(201).json(newBarrier);
     } catch (error) {
@@ -42,7 +41,6 @@ export const createBarrier = async (req, res) => {
 export const updateBarrier = async (req, res) => {
     const { name, description, selected } = req.body;
     try {
-        if (!name || !description || !selected) throw new Error("Name and description and selcted values are required");
         const barrier1 = await barrier.findOne({ where: { name: req.params.name } });
         if (!req.params.name) throw new Error("must provide name in the params");
         if (barrier1) {
@@ -61,8 +59,8 @@ export const updateBarrier = async (req, res) => {
 
 export const deleteBarrier = async (req, res) => {
     try {
-        if (!req.params.name) throw new Error("must provide name in the params");
-        const barrier1 = await barrier.findOne({ where: { name: req.params.name } });
+        if (!req.params.barrier) throw new Error("must provide name in the params");
+        const barrier1 = await barrier.findOne({ where: { id: req.params.barrier } });
         if (barrier1) {
             await barrier1.destroy();
             res.json({ message: "Barrier deleted successfully" });
