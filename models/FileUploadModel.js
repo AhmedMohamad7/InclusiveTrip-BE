@@ -1,9 +1,8 @@
-import e from "cors";
 import sequelize from "../db/index.js";
 import { DataTypes } from "sequelize";
 
 
-const fileUpload = sequelize.define("fileUploads", {
+const FileUpload = sequelize.define("fileUploads", {
     fileName: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -12,7 +11,7 @@ const fileUpload = sequelize.define("fileUploads", {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    fileSize: { 
+    fileSize: {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
@@ -20,7 +19,7 @@ const fileUpload = sequelize.define("fileUploads", {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    });
+});
 
 
-    export default fileUpload;
+export default FileUpload;

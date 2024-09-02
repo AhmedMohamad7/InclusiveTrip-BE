@@ -2,12 +2,12 @@ import sequelize from "../db/index.js";
 import { DataTypes } from "sequelize";
 
 
-const role = sequelize.define("roles", {
+const Role = sequelize.define("roles", {
     type: {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    });
+});
 
 
-export default role;
+export default Role;

@@ -1,21 +1,8 @@
 import sequelize from "../db/index.js";
 import { DataTypes } from "sequelize";
 
-
-const placeCategory = sequelize.define("placeCategories", {
+const Barrier = sequelize.define("barriers", {
     name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    searchName: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    icon: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    iconColor: {
         type: DataTypes.STRING,
         allowNull: false,
     },
@@ -30,4 +17,4 @@ const placeCategory = sequelize.define("placeCategories", {
     },
 });
 
-export default placeCategory;
+export default Barrier;

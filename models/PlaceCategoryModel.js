@@ -1,9 +1,21 @@
-import e from "cors";
 import sequelize from "../db/index.js";
 import { DataTypes } from "sequelize";
 
-const barrier = sequelize.define("barriers", {
+
+const PlaceCategory = sequelize.define("placeCategories", {
     name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    searchName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    icon: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    iconColor: {
         type: DataTypes.STRING,
         allowNull: false,
     },
@@ -16,6 +28,6 @@ const barrier = sequelize.define("barriers", {
         allowNull: false,
         defaultValue: false,
     },
-    });
+});
 
-    export default barrier;
+export default PlaceCategory;

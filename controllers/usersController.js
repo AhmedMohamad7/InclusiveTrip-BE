@@ -1,9 +1,9 @@
 
-import user from "../models/usersModel.js";
+import User from "../models/UserModel.js";
 
 export const getUsers = async (req, res) => {
     try {
-        const users = await user.findAll();
+        const users = await User.findAll();
         res.status(200).json(users);
     } catch (error) {
         res.status(404).json({ message: error.message });
@@ -11,7 +11,7 @@ export const getUsers = async (req, res) => {
 }
 export const getCountUsers = async (req, res) => {
     try {
-        const users = await user.count();
+        const users = await User.count();
         res.status(200).json(users);
     } catch (error) {
         res.status(404).json({ message: error.message });
@@ -21,7 +21,7 @@ export const getUser = async (req, res) => {
     const { id } = req.params;
     try {
         if (!id) throw new Error('Please provide id in the params');
-        const userToGet = await user.findOne({ where: {id} });
+        const userToGet = await User.findOne({ where: { id } });
         if (!userToGet) throw new Error('User not found');
         res.status(200).json(userToGet);
     } catch (error) {
@@ -30,18 +30,18 @@ export const getUser = async (req, res) => {
 }
 
 export const createUser = async (req, res) => {
-    const {firstName, lastName, email, password,roleId,blocked,profilePhoto} = req.body;
+    const { firstName, lastName, email, password, roleId, blocked, profilePhoto } = req.body;
     try {
         if (!firstName || !lastName || !email || !password) {
             return res.status(400).json({ message: 'Please provide firstName, lastName,email and password ' });
         }
         // Existiert die email bereits?
-        const existingUser = await user.findOne({ where: { email } });
+        const existingUser = await User.findOne({ where: { email } });
         if (existingUser) {
             return res.status(409).json({ message: 'user already exists' });
         }
 
-        const newUser = await user.create({firstName, lastName, email, password,roleId,blocked,profilePhoto});
+        const newUser = await User.create({ firstName, lastName, email, password, roleId, blocked, profilePhoto });
         res.status(201).json(newUser);
     } catch (error) {
         res.status(409).json({ message: error.message });
@@ -49,14 +49,14 @@ export const createUser = async (req, res) => {
 }
 
 export const updateUser = async (req, res) => {
-    const { id} = req.params;
-    const {firstName, lastName, email, password ,roleId,blocked,profilePhoto} = req.body;
+    const { id } = req.params;
+    const { firstName, lastName, email, password, roleId, blocked, profilePhoto } = req.body;
     try {
-        if(!id) throw new Error('Please provide id in the params');
+        if (!id) throw new Error('Please provide id in the params');
         if (!firstName || !lastName || !email || !password) {
             return res.status(400).json({ message: 'Please provide firstName, lastName,email and password in the body' });
         }
-        const userToUpdate = await user.findOne({ where: { id } });
+        const userToUpdate = await User.findOne({ where: { id } });
         if (!userToUpdate) throw new Error('User not found');
         userToUpdate.firstName = firstName;
         userToUpdate.lastName = lastName;
@@ -76,7 +76,7 @@ export const deleteUser = async (req, res) => {
     const { id } = req.params;
     try {
         if (!id) throw new Error('Please provide id in the params');
-        const userToDelete = await user.findOne({ where: { id } });
+        const userToDelete = await User.findOne({ where: { id } });
         if (!userToDelete) throw new Error('User not found');
         await userToDelete.destroy();
 

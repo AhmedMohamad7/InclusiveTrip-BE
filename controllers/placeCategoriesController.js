@@ -1,9 +1,9 @@
-import placeCategory from "../models/placeCategoriesModel.js";
+import PlaceCategory from "../models/PlaceCategoryModel.js";
 
 
 export const getPlaceCategories = async (req, res) => {
     try {
-        const placeCategories = await placeCategory.findAll();
+        const placeCategories = await PlaceCategory.findAll();
         res.status(200).json(placeCategories);
     } catch (error) {
         res.status(404).json({ message: error.message });
@@ -14,7 +14,7 @@ export const getPlaceCategory = async (req, res) => {
     const { name } = req.params;
     try {
         if (!name) throw new Error("please provide type in the params");
-        const placeCategoryToGet = await placeCategory.findOne({ where: { name } });
+        const placeCategoryToGet = await PlaceCategory.findOne({ where: { name } });
         if (!placeCategoryToGet) throw new Error("No place category found.");
         res.status(200).json(placeCategoryToGet);
     } catch (error) {
@@ -23,7 +23,7 @@ export const getPlaceCategory = async (req, res) => {
 }
 export const getSelectedPlaceCategories = async (req, res) => {
     try {
-        const placeCategories = await placeCategory.findAll({ where: { selected: true } });
+        const placeCategories = await PlaceCategory.findAll({ where: { selected: true } });
         res.status(200).json(placeCategories);
     } catch (error) {
         res.status(404).json({ message: error.message });
@@ -32,7 +32,7 @@ export const getSelectedPlaceCategories = async (req, res) => {
 export const createPlaceCategory = async (req, res) => {
     const { name, searchName, icon, iconColor, description, selected } = req.body;
     try {
-        const newPlaceCategory = await placeCategory.create({ name, searchName, icon, iconColor, description, selected });
+        const newPlaceCategory = await PlaceCategory.create({ name, searchName, icon, iconColor, description, selected });
         res.status(201).json(newPlaceCategory);
     } catch (error) {
         res.status(409).json({ message: error.message });
@@ -45,7 +45,7 @@ export const updatePlaceCategory = async (req, res) => {
     try {
         if (!name) throw new Error("please provide type in the body");
         if (!id) throw new Error("please provide id in the params");
-        const updatedPlaceCategory = await placeCategory.update({ name, searchName, icon, iconColor, description, selected }, { where: { id } });
+        const updatedPlaceCategory = await PlaceCategory.update({ name, searchName, icon, iconColor, description, selected }, { where: { id } });
         if (!updatedPlaceCategory) throw new Error("An error occurred while updating the place category.");
         res.status(200).json(updatedPlaceCategory);
     } catch (error) {
@@ -57,7 +57,7 @@ export const deletePlaceCategory = async (req, res) => {
     const { id } = req.params;
     try {
         if (!id) throw new Error("please provide id in the params");
-        const placeCategory1 = await placeCategory.findOne({ where: { id } });
+        const placeCategory1 = await PlaceCategory.findOne({ where: { id } });
         if (!placeCategory1) throw new Error("Place category not found.");
         await placeCategory1.destroy();
         res.status(200).json({ message: "Place category deleted successfully." });

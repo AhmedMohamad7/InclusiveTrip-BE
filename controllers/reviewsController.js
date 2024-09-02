@@ -1,48 +1,63 @@
-import review from "../models/reviewsModel.js";
+import Review from "../models/ReviewModel.js";
+import User from '../models/UserModel.js';
+import FileUpload from '../models/FileUploadModel.js';
 
 export const getReviews = async (req, res) => {
-  try {
-    const reviews = await review.findAll();
-    res.status(200).json(reviews);
-  } catch (error) {
-    res.status(404).json({ message: error.message });
-  }
+    try {
+        const reviews = await Review.findAll();
+        res.status(200).json(reviews);
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
 };
 export const getReviewsCount = async (req, res) => {
-  try {
-    const reviews = await review.count();
-    res.status(200).json(reviews);
-  } catch (error) {
-    res.status(404).json({ message: error.message });
-  }
+    try {
+        const reviews = await Review.count();
+        res.status(200).json(reviews);
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
 };
 export const getReviewsByUser = async (req, res) => {
-  const { userId } = req;
-  try {
-    if (!userId) throw new Error("Please login first");
-    const reviews = await review.findAll({ where: { userId } });
-    res.status(200).json(reviews);
-  } catch (error) {
-    res.status(404).json({ message: error.message });
-  }
+    const { userId } = req;
+    try {
+        if (!userId) throw new Error("Please login first");
+        const reviews = await Review.findAll({
+            where: { userId },
+            order: [['createdAt', 'DESC']]
+        });
+        res.status(200).json(reviews);
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
 };
-export const getReview = async (req, res) => {
-  const { placeId } = req.params;
-  try {
-    if (!placeId) throw new Error("Please provide placeId in the params");
-    const reviewToGet = await review.findOne({ where: { placeId } });
-    if (!reviewToGet) throw new Error("No review found.");
-    res.status(200).json(reviewToGet);
-  } catch (error) {
-    res.status(404).json({ message: error.message });
-  }
+export const getReviewsByPlaceId = async (req, res) => {
+    const { placeId } = req.params;
+    try {
+        const reviews = await Review.findAll({
+            where: { placeId },
+            include: [{
+                model: User,
+                attributes: ['firstName', 'lastName', 'email']
+            },
+            {
+                model: FileUpload,
+                attributes: ['fileName', 'fileType', 'fileSize', 'filePath']
+            }],
+            order: [['createdAt', 'DESC']]
+        });
+
+        res.status(200).json(reviews);
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
 };
 
 export const getReviewById = async (req, res) => {
-    const {reviewId}=req.params;
+    const { reviewId } = req.params;
     try {
         if (!reviewId) throw new Error("Please provide reviewId in the params");
-        const reviewToGet = await review.findOne({ where: { id: reviewId } });
+        const reviewToGet = await Review.findOne({ where: { id: reviewId } });
         if (!reviewToGet) throw new Error("No review found.");
         res.status(200).json(reviewToGet);
     } catch (error) {
@@ -50,76 +65,76 @@ export const getReviewById = async (req, res) => {
     }
 }
 export const createReview = async (req, res) => {
-  const { placeName, placeId, comment, placeCategoryId } = req.body;
-  const { userId } = req;
-  try {
-    if (!placeId || !comment || !placeCategoryId)
-      throw new Error(
-        "Please provide placeId and comment and placeCategoryId in the body"
-      );
-    // if (!userId) throw new Error("Please login first");
-    // const hasTheUserReviewed = await review.findOne({
-    //   where: { placeId, userId },
-    // });
-    // if (hasTheUserReviewed)
-    //   throw new Error("You have already reviewed this place.");
-    console.log(placeName, placeId, comment, placeCategoryId, userId);
-    const newReview = await review.create({
-      placeName,
-      placeId,
-      comment,
-      placeCategoryId,
-      userId,
-    });
+    const { placeName, placeId, comment, placeCategoryId } = req.body;
+    const { userId } = req;
+    try {
+        if (!placeId || !comment || !placeCategoryId)
+            throw new Error(
+                "Please provide placeId and comment and placeCategoryId in the body"
+            );
+        // if (!userId) throw new Error("Please login first");
+        // const hasTheUserReviewed = await review.findOne({
+        //   where: { placeId, userId },
+        // });
+        // if (hasTheUserReviewed)
+        //   throw new Error("You have already reviewed this place.");
+        console.log(placeName, placeId, comment, placeCategoryId, userId);
+        const newReview = await Review.create({
+            placeName,
+            placeId,
+            comment,
+            placeCategoryId,
+            userId,
+        });
 
-    res.status(201).json(newReview);
-  } catch (error) {
-    res.status(409).json({ message: error.message });
-  }
+        res.status(201).json(newReview);
+    } catch (error) {
+        res.status(409).json({ message: error.message });
+    }
 };
 
 export const updateReview = async (req, res) => {
-  const { review } = req.params;
-  const { placeName, placeId, comment, placeCategoryId } = req.body;
-  const { userId } = req;
-  try {
-    if (!placeId || !comment || !placeCategoryId)
-      throw new Error(
-        "Please provide placeId and comment and placeCategoryId in the body"
-      );
-    if (!placeId) throw new Error("please provide placeId in the params");
-    if (!userId) throw new Error("Please login first");
-    const updatedReview = await review.findOne({ where: { id: review } });
-    if (!updatedReview) throw new Error("Review not found.");
-    if (updatedReview.userId !== userId)
-      throw new Error("You are not allowed to update this review.");
-    await updatedReview.update({
-      placeName,
-      placeId,
-      comment,
-      placeCategoryId,
-      userId,
-    });
-    await updatedReview.save();
-    res.status(200).json(updatedReview);
-  } catch (error) {
-    res.status(409).json({ message: error.message });
-  }
+    const { review } = req.params;
+    const { placeName, placeId, comment, placeCategoryId } = req.body;
+    const { userId } = req;
+    try {
+        if (!placeId || !comment || !placeCategoryId)
+            throw new Error(
+                "Please provide placeId and comment and placeCategoryId in the body"
+            );
+        if (!placeId) throw new Error("please provide placeId in the params");
+        if (!userId) throw new Error("Please login first");
+        const updatedReview = await review.findOne({ where: { id: review } });
+        if (!updatedReview) throw new Error("Review not found.");
+        if (updatedReview.userId !== userId)
+            throw new Error("You are not allowed to update this review.");
+        await updatedReview.update({
+            placeName,
+            placeId,
+            comment,
+            placeCategoryId,
+            userId,
+        });
+        await updatedReview.save();
+        res.status(200).json(updatedReview);
+    } catch (error) {
+        res.status(409).json({ message: error.message });
+    }
 };
 
 export const deleteReview = async (req, res) => {
-  const { placeId } = req.params;
-  const { userId } = req;
-  try {
-    if (!placeId) throw new Error("please provide placeId in the params");
-    if (!userId) throw new Error("Please login first");
-    const review1 = await review.findOne({ where: { placeId: placeId } });
-    if (!review1) throw new Error("Review not found.");
-    if (review1.userId !== userId)
-      throw new Error("You are not allowed to delete this review.");
-    await review1.destroy();
-    res.status(200).json({ message: "Review deleted successfully." });
-  } catch (error) {
-    res.status(409).json({ message: error.message });
-  }
+    const { placeId } = req.params;
+    const { userId } = req;
+    try {
+        if (!placeId) throw new Error("please provide placeId in the params");
+        if (!userId) throw new Error("Please login first");
+        const review1 = await Review.findOne({ where: { placeId: placeId } });
+        if (!review1) throw new Error("Review not found.");
+        if (review1.userId !== userId)
+            throw new Error("You are not allowed to delete this review.");
+        await review1.destroy();
+        res.status(200).json({ message: "Review deleted successfully." });
+    } catch (error) {
+        res.status(409).json({ message: error.message });
+    }
 };
