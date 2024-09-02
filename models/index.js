@@ -1,27 +1,27 @@
 import sequelize from "../db/index.js";
-import barrier from "./barriersModel.js";
-import review from "./reviewsModel.js";
-import barrierReview from "./barriersReviewsModel.js";
-import placeCategory from "./placeCategoriesModel.js";
-import fileUpload from "./fileUploadsModel.js";
-import user from "./usersModel.js";
-import role from "./rolesModel.js";
+import Review from "./ReviewModel.js";
+import BarrierReview from "./BarrierReviewsModel.js";
+import PlaceCategory from "./PlaceCategoryModel.js";
+import FileUpload from "./FileUploadModel.js";
+import User from "./UserModel.js";
+import Role from "./RoleModel.js";
+import Barrier from "./BarrierModel.js";
 
 
-user.hasMany(review, { foreignKey: "userId" });
-review.belongsTo(user, { foreignKey: "userId" });
+User.hasMany(Review, { foreignKey: "userId" });
+Review.belongsTo(User, { foreignKey: "userId" });
 
-role.hasOne(user, { foreignKey: "roleId" });
-user.belongsTo(role, { foreignKey: "roleId" });
+Role.hasOne(User, { foreignKey: "roleId" });
+User.belongsTo(Role, { foreignKey: "roleId" });
 
-review.hasMany(fileUpload, { foreignKey: "reviewId" });
-fileUpload.belongsTo(review, { foreignKey: "reviewId" });
+Review.hasMany(FileUpload, { foreignKey: "reviewId" });
+FileUpload.belongsTo(Review, { foreignKey: "reviewId" });
 
-placeCategory.hasMany(review, { foreignKey: "placeCategoryId" });
-review.belongsTo(placeCategory, { foreignKey: "placeCategoryId" });
+PlaceCategory.hasMany(Review, { foreignKey: "placeCategoryId" });
+Review.belongsTo(PlaceCategory, { foreignKey: "placeCategoryId" });
 
-review.belongsToMany(barrier, { through: barrierReview, foreignKey: "reviewId" });
-barrier.belongsToMany(review, { through: barrierReview, foreignKey: "barrierId" });
+Review.belongsToMany(Barrier, { through: BarrierReview, foreignKey: "reviewId" });
+Barrier.belongsToMany(Review, { through: BarrierReview, foreignKey: "barrierId" });
 
 await sequelize.sync();
 console.log("All models were synchronized successfully.");

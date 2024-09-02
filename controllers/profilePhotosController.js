@@ -1,4 +1,4 @@
-import users from "../models/usersModel.js";
+import users from "../models/UserModel.js";
 
 import { deleteFile2 } from "./profileFiles.js";
 

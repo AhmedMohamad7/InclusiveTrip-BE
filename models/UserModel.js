@@ -1,9 +1,9 @@
 import sequelize from "../db/index.js";
 import { DataTypes } from "sequelize";
-import role from "./rolesModel.js";
+import Role from "./RoleModel.js";
 
 
-const user = sequelize.define("users", {
+const User = sequelize.define("users", {
     firstName: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -25,7 +25,7 @@ const user = sequelize.define("users", {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: role,
+            model: Role,
             key: "id",
         },
         defaultValue: 3,
@@ -39,6 +39,6 @@ const user = sequelize.define("users", {
         allowNull: false,
         defaultValue: false,
     },
-    });
+});
 
-export default user;
+export default User;

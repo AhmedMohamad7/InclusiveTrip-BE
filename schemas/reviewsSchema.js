@@ -1,5 +1,5 @@
 import Joi from "joi";
-import user from "../models/usersModel.js";
+import User from "../models/UserModel.js";
 
 const reviewsSchema = Joi.object({
     placeName: Joi.string().required().messages({

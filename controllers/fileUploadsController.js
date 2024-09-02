@@ -1,4 +1,4 @@
-import fileUpload from "../models/fileUploadsModel.js";
+import FileUpload from "../models/FileUploadModel.js";
 import { deleteFile1 } from "./file.js";
 
 export const createFile = async (req, res) => {
@@ -14,7 +14,7 @@ export const createFile = async (req, res) => {
     }
     const savedFiles = [];
     for (const file of files) {
-      const newFile = new fileUpload({
+      const newFile = new FileUpload({
         fileName: file.filename,
         fileType: file.mimetype,
         fileSize: file.size,
@@ -33,7 +33,7 @@ export const createFile = async (req, res) => {
 
 export const getFiles = async (req, res) => {
   try {
-    const files = await fileUpload.findAll();
+    const files = await FileUpload.findAll();
     res.status(200).json(files);
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -44,7 +44,7 @@ export const getFile = async (req, res) => {
   try {
     if (!req.params.filename)
       throw new Error("must provide filename in the params");
-    const file = await fileUpload.findOne({
+    const file = await FileUpload.findOne({
       where: { fileName: req.params.filename },
     });
     if (!file) throw new Error("File not found");
@@ -58,7 +58,7 @@ export const deleteFile = async (req, res) => {
   try {
     if (!req.params.filename)
       throw new Error("must provide filename in the params");
-    const file = await fileUpload.findOne({
+    const file = await FileUpload.findOne({
       where: { fileName: req.params.filename },
     });
     if (!file) throw new Error("File not found");
@@ -74,7 +74,7 @@ export const updateFile = async (req, res) => {
   try {
     if (!req.params.filename)
       throw new Error("must provide filename in the params");
-    const file = await fileUpload.findOne({
+    const file = await FileUpload.findOne({
       where: { fileName: req.params.filename },
     });
     if (!file) throw new Error("File not found");
