@@ -2,7 +2,7 @@ import sequelize from "../db/index.js";
 import { DataTypes } from "sequelize";
 
 
-const FileUpload = sequelize.define("fileUploads", {
+const FileUpload = sequelize.define("FileUpload", {
     fileName: {
         type: DataTypes.STRING,
         allowNull: false,

@@ -7,12 +7,12 @@ import barriersReviewsSchema from "../schemas/barriersReviewsSchema.js";
 const barrierReviewRouter = Router();
 
 
+barrierReviewRouter.get("/review/:reviewId", getBarrierReviewsByReviewId);
 barrierReviewRouter.get("/", getBarriersReviews);
 barrierReviewRouter.get("/:id", getBarrierReview);
 barrierReviewRouter.post("/", validateSchema(barriersReviewsSchema), createBarrierReview);
 barrierReviewRouter.put("/:id", validateSchema(barriersReviewsSchema), updateBarrierReview);
 barrierReviewRouter.delete("/:id", deleteBarrierReview);
-barrierReviewRouter.get("/review/:reviewId", getBarrierReviewsByReviewId);
 
 
 export default barrierReviewRouter;
