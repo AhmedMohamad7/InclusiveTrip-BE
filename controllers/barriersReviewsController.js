@@ -1,6 +1,5 @@
 import Barrier from "../models/BarrierModel.js";
 import BarrierReview from "../models/BarrierReviewsModel.js";
-import Review from "../models/ReviewModel.js";
 
 export const getBarriersReviews = async (req, res) => {
   try {
@@ -25,19 +24,23 @@ export const getBarrierReview = async (req, res) => {
 };
 
 export const getBarrierReviewsByReviewId = async (req, res) => {
-  const { reviewId } = req.params;
-  console.log(reviewId);
-  try {
-    const reviews = await BarrierReview.findAll({
-      //   where: { reviewId: reviewId },
-      include: Barrier,
-      // order: [['createdAt', 'DESC']],
-    });
-    console.log(reviews);
-    res.status(200).json(reviews);
-  } catch (error) {
-    res.status(404).json({ message: error.message });
-  }
+    const { reviewId } = req.params;
+    try {
+        const reviews = await BarrierReview.findAll({
+            where: { reviewId: reviewId },
+            include: [
+                {
+                    model: Barrier,
+                },
+            ],
+            order: [['createdAt', 'DESC']],
+        });
+
+        res.status(200).json(reviews);
+    } catch (error) {
+        console.error('Error fetching barrier reviews:', error);
+        res.status(500).json({ message: 'An error occurred while fetching barrier reviews.', error: error.message });
+    }
 };
 
 export const createBarrierReview = async (req, res) => {

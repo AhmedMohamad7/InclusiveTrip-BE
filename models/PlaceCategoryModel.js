@@ -2,7 +2,7 @@ import sequelize from "../db/index.js";
 import { DataTypes } from "sequelize";
 
 
-const PlaceCategory = sequelize.define("placeCategories", {
+const PlaceCategory = sequelize.define("PlaceCategory", {
     name: {
         type: DataTypes.STRING,
         allowNull: false,

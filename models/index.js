@@ -19,14 +19,12 @@ FileUpload.belongsTo(Review, { foreignKey: "reviewId" });
 PlaceCategory.hasMany(Review, { foreignKey: "placeCategoryId" });
 Review.belongsTo(PlaceCategory, { foreignKey: "placeCategoryId" });
 
-Barrier.belongsToMany(Review, {
-  through: BarrierReview,
-  foreignKey: "barrierId",
-});
-Review.belongsToMany(Barrier, {
-  through: BarrierReview,
-  foreignKey: "reviewId",
-});
+Barrier.hasMany(BarrierReview, { foreignKey: 'barrierId' });
+BarrierReview.belongsTo(Barrier, { foreignKey: 'barrierId' });
+
+Review.hasMany(BarrierReview, { foreignKey: 'reviewId' });
+BarrierReview.belongsTo(Review, { foreignKey: 'reviewId' });
+
 
 await sequelize.sync();
 console.log("All models were synchronized successfully.");

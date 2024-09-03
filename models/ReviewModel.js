@@ -2,7 +2,7 @@ import sequelize from "../db/index.js";
 import { DataTypes } from "sequelize";
 
 
-const Review = sequelize.define("reviews", {
+const Review = sequelize.define("Review", {
     placeName: {
         type: DataTypes.STRING,
         allowNull: false,

@@ -1,7 +1,7 @@
 import Review from "../models/ReviewModel.js";
 import User from '../models/UserModel.js';
 import FileUpload from '../models/FileUploadModel.js';
-
+import { deleteFile1 } from "./file.js";
 export const getReviews = async (req, res) => {
     try {
         const reviews = await Review.findAll();
@@ -94,7 +94,7 @@ export const createReview = async (req, res) => {
 };
 
 export const updateReview = async (req, res) => {
-    const { review } = req.params;
+    const { reviewId } = req.params;
     const { placeName, placeId, comment, placeCategoryId } = req.body;
     const { userId } = req;
     try {
@@ -104,7 +104,7 @@ export const updateReview = async (req, res) => {
             );
         if (!placeId) throw new Error("please provide placeId in the params");
         if (!userId) throw new Error("Please login first");
-        const updatedReview = await review.findOne({ where: { id: review } });
+        const updatedReview = await Review.findOne({ where: { id: reviewId } });
         if (!updatedReview) throw new Error("Review not found.");
         if (updatedReview.userId !== userId)
             throw new Error("You are not allowed to update this review.");
@@ -123,12 +123,20 @@ export const updateReview = async (req, res) => {
 };
 
 export const deleteReview = async (req, res) => {
-    const { placeId } = req.params;
+    const { reviewId } = req.params;
     const { userId } = req;
     try {
-        if (!placeId) throw new Error("please provide placeId in the params");
+        if (!reviewId) throw new Error("please provide reviewId in the params");
         if (!userId) throw new Error("Please login first");
-        const review1 = await Review.findOne({ where: { placeId: placeId } });
+        const filesToBeDeleted = await FileUpload.findAll({
+            where: { reviewId }
+        });
+        filesToBeDeleted.forEach(async (file) => {
+            await deleteFile1(file.fileName);
+            console.log(file.fileName);
+            await file.destroy();
+        });
+        const review1 = await Review.findOne({ where: { id: reviewId } });
         if (!review1) throw new Error("Review not found.");
         if (review1.userId !== userId)
             throw new Error("You are not allowed to delete this review.");
