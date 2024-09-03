@@ -3,7 +3,7 @@ import { DataTypes } from "sequelize";
 import Role from "./RoleModel.js";
 
 
-const User = sequelize.define("users", {
+const User = sequelize.define("User", {
     firstName: {
         type: DataTypes.STRING,
         allowNull: false,

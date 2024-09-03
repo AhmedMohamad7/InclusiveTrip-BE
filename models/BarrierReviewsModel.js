@@ -1,35 +1,27 @@
-import sequelize from "../db/index.js";
-import { DataTypes } from "sequelize";
+import { DataTypes } from 'sequelize';
+import sequelize from '../db/index.js';
 
-import Barrier from "./BarrierModel.js";
-import Review from "./ReviewModel.js";
-
-const BarrierReview = sequelize.define("barriersReviews", {
-    id: {
+const BarrierReview = sequelize.define('BarrierReview', {
+    reviewId: {
         type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
+        allowNull: false,
+        references: {
+            model: 'Reviews', // Name of the target model
+            key: 'id'
+        }
     },
     barrierId: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: Barrier,
-            key: "id",
-        },
-    },
-    reviewId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: Review,
-            key: "id",
-        },
+            model: 'Barriers', // Name of the target model
+            key: 'id'
+        }
     },
     reviews: {
-        type: DataTypes.SMALLINT,
-        allowNull: false,
-    },
+        type: DataTypes.TEXT,
+        allowNull: false
+    }
 });
 
 export default BarrierReview;
