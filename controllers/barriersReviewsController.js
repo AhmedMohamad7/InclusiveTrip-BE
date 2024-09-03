@@ -1,4 +1,6 @@
+import Barrier from "../models/BarrierModel.js";
 import BarrierReview from "../models/BarrierReviewsModel.js";
+import Review from "../models/ReviewModel.js";
 
 export const getBarriersReviews = async (req, res) => {
     try {
@@ -19,6 +21,31 @@ export const getBarrierReview = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+
+export const getBarrierReviewsByReviewId = async (req, res) => {
+    const { reviewId } = req.params;
+    try {
+        const reviews = await BarrierReview.findAll({
+            where: { reviewId: reviewId },
+            include: [
+                {
+                    model: Barrier,
+                    attributes: ['id', 'name'],
+                    as: 'barriers',
+                },
+            ],
+            order: [['createdAt', 'DESC']],
+        });
+
+        res.status(200).json(reviews);
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+};
+
+
+
 
 export const createBarrierReview = async (req, res) => {
     const { barrierId, reviewId, reviews } = req.body;
