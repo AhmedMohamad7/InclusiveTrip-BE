@@ -16,14 +16,12 @@ const reviewRouter = Router();
 
 
 reviewRouter.get("/", getReviews);
-reviewRouter.get("/user", verifyToken, getReviewsByUser);
 reviewRouter.get("/count", getReviewsCount);
+reviewRouter.get("/user", verifyToken, getReviewsByUser);
 reviewRouter.get("/place/:placeId", getReviewsByPlaceId);
 reviewRouter.get("/reviewid/:reviewId", getReviewById);
 reviewRouter.post("/", validateSchema(reviewsSchema), verifyToken, createReview);
 reviewRouter.put("/:reviewId", validateSchema(reviewsSchema), verifyToken, updateReview);
 reviewRouter.delete("/:reviewId", verifyToken, deleteReview);
-
-
 
 export default reviewRouter;

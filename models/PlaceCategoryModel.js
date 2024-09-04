@@ -11,6 +11,11 @@ const PlaceCategory = sequelize.define("PlaceCategory", {
         type: DataTypes.STRING,
         allowNull: false,
     },
+    tag: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: "amenity",
+    },
     icon: {
         type: DataTypes.STRING,
         allowNull: false,
