@@ -12,6 +12,7 @@ const placeCategoriesSchema = Joi.object({
         'string.empty': 'Search name cannot be an empty field.',
         'any.required': 'Search name is required.'
     }),
+    tag: Joi.string().optional().messages(),
     icon: Joi.string().required().messages({
         'string.base': 'Icon should be a type of text.',
         'string.empty': 'Icon cannot be an empty field.',

@@ -12,8 +12,8 @@ export const getReviews = async (req, res) => {
 };
 export const getReviewsCount = async (req, res) => {
     try {
-        const reviews = await Review.count();
-        res.status(200).json(reviews);
+        const reviewsCount = await Review.count();
+        res.status(200).json({ count: reviewsCount });
     } catch (error) {
         res.status(404).json({ message: error.message });
     }
