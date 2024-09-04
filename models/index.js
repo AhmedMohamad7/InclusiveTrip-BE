@@ -7,7 +7,6 @@ import User from "./UserModel.js";
 import Role from "./RoleModel.js";
 import Barrier from "./BarrierModel.js";
 
-
 User.hasMany(Review, { foreignKey: "userId" });
 Review.belongsTo(User, { foreignKey: "userId" });
 
@@ -29,4 +28,3 @@ BarrierReview.belongsTo(Review, { foreignKey: 'reviewId' });
 
 await sequelize.sync();
 console.log("All models were synchronized successfully.");
-

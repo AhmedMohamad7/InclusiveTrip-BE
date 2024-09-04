@@ -1,5 +1,5 @@
 import multer from "multer";
-import fs, { access } from "fs";
+import fs from 'fs/promises';
 import path from "path";
 
 const allowedMimeTypes = ["image/jpeg", "image/jpg","image/png"];
@@ -30,7 +30,7 @@ export const deleteFile1 = async (filename) => {
   
   const filePath = path.join("uploads/reviewsPhotos", filename);
   try{
-  await access(filePath);
+  await fs.access(filePath);
   await fs.unlink(filePath);
   console.log(`File ${filename} deleted successfully.`);
   }

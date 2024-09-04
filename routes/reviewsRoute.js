@@ -21,7 +21,7 @@ reviewRouter.get("/user", verifyToken, getReviewsByUser);
 reviewRouter.get("/place/:placeId", getReviewsByPlaceId);
 reviewRouter.get("/reviewid/:reviewId", getReviewById);
 reviewRouter.post("/", validateSchema(reviewsSchema), verifyToken, createReview);
-reviewRouter.put("/:placeId", validateSchema(reviewsSchema), verifyToken, updateReview);
-reviewRouter.delete("/:placeId", verifyToken, deleteReview);
+reviewRouter.put("/:reviewId", validateSchema(reviewsSchema), verifyToken, updateReview);
+reviewRouter.delete("/:reviewId", verifyToken, deleteReview);
 
 export default reviewRouter;
