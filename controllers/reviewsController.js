@@ -24,6 +24,14 @@ export const getReviewsByUser = async (req, res) => {
         if (!userId) throw new Error("Please login first");
         const reviews = await Review.findAll({
             where: { userId },
+            include: [{
+                model: User,
+                attributes: ['firstName', 'lastName', 'email']
+            },
+            {
+                model: FileUpload,
+                attributes: ['fileName', 'fileType', 'fileSize', 'filePath']
+            }],
             order: [['createdAt', 'DESC']]
         });
         res.status(200).json(reviews);
@@ -57,7 +65,17 @@ export const getReviewById = async (req, res) => {
     const { reviewId } = req.params;
     try {
         if (!reviewId) throw new Error("Please provide reviewId in the params");
-        const reviewToGet = await Review.findOne({ where: { id: reviewId } });
+        const reviewToGet = await Review.findOne({
+            where: { reviewId },
+            include: [{
+                model: User,
+                attributes: ['firstName', 'lastName', 'email']
+            },
+            {
+                model: FileUpload,
+                attributes: ['fileName', 'fileType', 'fileSize', 'filePath']
+            }],
+        });
         if (!reviewToGet) throw new Error("No review found.");
         res.status(200).json(reviewToGet);
     } catch (error) {

@@ -3,7 +3,7 @@ import Barrier from "../models/BarrierModel.js";
 
 export const getBarriers = async (req, res) => {
     try {
-        const barriers = await Barrier.findAll();
+        const barriers = await Barrier.findAll({ where: { selected: true }, order: [['createdAt', 'ASC']] });
         res.status(200).json(barriers);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -12,7 +12,7 @@ export const getBarriers = async (req, res) => {
 
 export const getSelectedBarriers = async (req, res) => {
     try {
-        const barriers = await Barrier.findAll({ where: { selected: true } });
+        const barriers = await Barrier.findAll({ where: { selected: true }, order: [['createdAt', 'ASC']] });
         res.status(200).json(barriers);
     } catch (error) {
         res.status(500).json({ message: error.message });
